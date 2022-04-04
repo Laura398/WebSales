@@ -27,20 +27,21 @@ class HomeState extends State<Home> {
 }
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
+  @override
   Size get preferredSize => new Size.fromHeight(50);
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Colors.white,
+      centerTitle: true,
       title: Text(
-        'Markets',
+        'Market',
         style: GoogleFonts.nunito(
           color: Colors.black,
           fontSize: 22,
           fontWeight: FontWeight.w800,
         ),
       ),
-      centerTitle: true,
-      backgroundColor: Colors.white,
     );
   }
 }

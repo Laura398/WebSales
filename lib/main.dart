@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:websales/src/auction.page.dart';
 import 'package:websales/src/auth.page.dart';
+import 'package:websales/src/auth.signUp.dart';
 import 'package:websales/src/settings.page.dart';
 // import 'package:websales/calendar_page.dart';
 
@@ -21,10 +22,17 @@ class WebSales extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'WebSales',
+      // title: 'WebSales',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      routes: {
+        '/home': (context) => Home(),
+        '/myAuction': (context) => MyAuction(),
+        '/settings': (context) => Settings(),
+        '/auth': (context) => Auth(),
+        '/authSignUp': (context) => AuthInscription(),
+      },
       home: DefaultTabController(
         length: 4,
         child: Scaffold(
@@ -43,9 +51,5 @@ class WebSales extends StatelessWidget {
         ),
       ),
     );
-    centerTitle:
-    true;
-    backgroundColor:
-    Colors.white;
   }
 }
