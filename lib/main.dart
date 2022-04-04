@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:websales/src/auction.page.dart';
 import 'package:websales/src/auth.page.dart';
 import 'package:websales/src/settings.page.dart';
+// import 'package:websales/calendar_page.dart';
 
 import 'src/home.page.dart';
 // import 'package:websales/calendar_page.dart';
@@ -42,5 +43,9 @@ class WebSales extends StatelessWidget {
         ),
       ),
     );
+    centerTitle:
+    true;
+    backgroundColor:
+    Colors.white;
   }
 }
