@@ -55,11 +55,12 @@ class Connexion extends State<AuthConnexion> {
         children: <Widget>[
           const Padding(padding: EdgeInsets.all(50)),
           Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/images/logo.png',
-                ),
+            child: Text(
+              'WEB\$ALES',
+              style: GoogleFonts.nunito(
+                color: Colors.black,
+                fontSize: 50,
+                fontWeight: FontWeight.w800,
               ),
             ),
           ),

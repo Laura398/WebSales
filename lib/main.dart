@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart'; 
+import 'package:flutter/material.dart';
 import 'package:websales/src/auction.page.dart';
 import 'package:websales/src/auth.page.dart';
 import 'package:websales/src/auth.signUp.dart';
-import 'package:websales/src/settings.page.dart';
+import 'package:websales/src/trade.page.dart';
 // import 'package:websales/calendar_page.dart';
 
 import 'src/home.page.dart';
@@ -28,7 +28,7 @@ class WebSales extends StatelessWidget {
       routes: {
         '/home': (context) => Home(),
         '/myAuction': (context) => MyAuction(),
-        '/settings': (context) => Settings(),
+        '/myBids': (context) => MyBids(),
         '/auth': (context) => Auth(),
         '/authSignUp': (context) => AuthInscription(),
       },
@@ -39,13 +39,13 @@ class WebSales extends StatelessWidget {
             labelColor: colorNav,
             tabs: [
               Tab(icon: Icon(Icons.account_balance)),
+              Tab(icon: Icon(Icons.card_travel)),
               Tab(icon: Icon(Icons.add_shopping_cart)),
               Tab(icon: Icon(Icons.person)),
-              Tab(icon: Icon(Icons.brightness_5)),
             ],
           ),
           body: TabBarView(
-            children: [Home(), MyAuction(), Auth(), Settings()],
+            children: [Home(), MyBids(), MyAuction(), Auth()],
           ),
         ),
       ),
