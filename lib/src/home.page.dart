@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:websales/main.dart';
 
 const d_green = Color.fromARGB(255, 139, 199, 233);
 
@@ -176,7 +174,7 @@ class HotelSection extends StatelessWidget {
       'place': 'Webley, London',
       'distance': 2,
       'review': 36,
-      'picture': 'images/image1.jpg',
+      'picture': 'assets/images/image1.jpg',
       'price': '180',
     },
     {
@@ -184,7 +182,7 @@ class HotelSection extends StatelessWidget {
       'place': 'Webley, London',
       'distance': 2,
       'review': 36,
-      'picture': 'images/image2.jpg',
+      'picture': 'assets/images/image2.jpg',
       'price': '180',
     },
     {
@@ -192,7 +190,7 @@ class HotelSection extends StatelessWidget {
       'place': 'Webley, London',
       'distance': 2,
       'review': 36,
-      'picture': 'images/image1.jpg',
+      'picture': 'assets/images/image1.jpg',
       'price': '180',
     },
     {
@@ -200,7 +198,7 @@ class HotelSection extends StatelessWidget {
       'place': 'Webley, London',
       'distance': 2,
       'review': 36,
-      'picture': 'images/image2.jpg',
+      'picture': 'assets/images/image2.jpg',
       'price': '180',
     },
   ];

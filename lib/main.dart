@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter/material.dart'; 
 import 'package:websales/src/auction.page.dart';
 import 'package:websales/src/auth.page.dart';
 import 'package:websales/src/auth.signUp.dart';
