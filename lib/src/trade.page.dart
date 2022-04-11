@@ -2,18 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MyAuction extends StatefulWidget {
+class MyBids extends StatefulWidget {
   @override
-  State<MyAuction> createState() => MyAuctionState();
+  State<MyBids> createState() => MyBidsState();
 }
 
-class MyAuctionState extends State<MyAuction> {
+class MyBidsState extends State<MyBids> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'My auction',
+          'My bids',
           style: GoogleFonts.nunito(
             color: Colors.black,
             fontSize: 22,

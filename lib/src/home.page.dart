@@ -125,37 +125,6 @@ class SearchSection extends State<MainPage> {
                   ),
                 ),
               ),
-              SizedBox(
-                width: 10,
-              ),
-              Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.shade300,
-                      blurRadius: 4,
-                      offset: Offset(0, 4),
-                    ),
-                  ],
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(25),
-                  ),
-                ),
-                child: ElevatedButton(
-                  onPressed: () {},
-                  child: Icon(
-                    Icons.search,
-                    size: 26,
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    shape: CircleBorder(),
-                    padding: EdgeInsets.all(10),
-                    primary: d_green,
-                  ),
-                ),
-              ),
             ],
           ),
           SizedBox(height: 50),
