@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:websales/main.dart';
 
 const d_green = Color.fromARGB(255, 139, 199, 233);
 
@@ -52,7 +50,7 @@ class SearchSection extends State<MainPage> {
       'lastname': 'MACHIN',
       'date': DateTime(2023, 1, 1),
       'buyers': 36,
-      'picture': 'images/image1.jpg',
+      'picture': 'assets/images/image1.jpg',
       'price': '180',
     },
     {
@@ -61,7 +59,7 @@ class SearchSection extends State<MainPage> {
       'lastname': 'TRUC',
       'date': DateTime(2022, 6, 1),
       'buyers': 36,
-      'picture': 'images/image2.jpg',
+      'picture': 'assets/images/image2.jpg',
       'price': '180',
     },
     {
@@ -70,7 +68,7 @@ class SearchSection extends State<MainPage> {
       'lastname': 'MACHIN',
       'date': DateTime(2023, 1, 1),
       'buyers': 36,
-      'picture': 'images/image1.jpg',
+      'picture': 'assets/images/image1.jpg',
       'price': '180',
     },
     {
@@ -79,7 +77,7 @@ class SearchSection extends State<MainPage> {
       'lastname': 'TRUC',
       'date': DateTime(2022, 6, 1),
       'buyers': 36,
-      'picture': 'images/image2.jpg',
+      'picture': 'assets/images/image2.jpg',
       'price': '180',
     },
   ];
