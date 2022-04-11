@@ -1,3 +1,5 @@
+// import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -53,7 +55,7 @@ class SearchSection extends State<MainPage> {
       'date': DateTime(2023, 1, 1),
       'buyers': 36,
       'picture': 'assets/images/image1.jpg',
-      'price': '180',
+      'price': 180,
     },
     {
       'title': 'Produit 2',
@@ -62,7 +64,7 @@ class SearchSection extends State<MainPage> {
       'date': DateTime(2022, 6, 1),
       'buyers': 36,
       'picture': 'assets/images/image2.jpg',
-      'price': '180',
+      'price': 100,
     },
     {
       'title': 'Produit 3',
@@ -71,7 +73,7 @@ class SearchSection extends State<MainPage> {
       'date': DateTime(2023, 1, 1),
       'buyers': 36,
       'picture': 'assets/images/image1.jpg',
-      'price': '180',
+      'price': 500,
     },
     {
       'title': 'Produit 4',
@@ -80,13 +82,17 @@ class SearchSection extends State<MainPage> {
       'date': DateTime(2022, 6, 1),
       'buyers': 36,
       'picture': 'assets/images/image2.jpg',
-      'price': '180',
+      'price': 800,
     },
   ];
 
   DateTime dateToShow = DateTime.now();
   String text = '';
+  int price = 1;
+  int startPrice = 1;
+  int endPrice = 1000;
   List productFinalList = [];
+  RangeValues _currentRangeValues = const RangeValues(1, 1000);
 
   @override
   void initState() {
@@ -97,7 +103,7 @@ class SearchSection extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey[200],
+      color: Colors.white,
       padding: EdgeInsets.fromLTRB(10, 25, 10, 10),
       child: Column(
         children: [
@@ -123,77 +129,89 @@ class SearchSection extends State<MainPage> {
                       contentPadding: EdgeInsets.all(10),
                       border: InputBorder.none,
                     ),
-                    onChanged: (text) => search(text, dateToShow),
+                    onChanged: (text) =>
+                        search(text, dateToShow, startPrice, endPrice),
                   ),
                 ),
               ),
             ],
           ),
           SizedBox(height: 50),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              InkWell(
-                onTap: () async {
-                  DateTime? newDate = await showDatePicker(
-                    context: context,
-                    initialDate: dateToShow,
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2100),
-                  );
-                  // if 'CANCEL' => null
-                  if (newDate == null) return;
-                  // if 'OK' => DateTime
-                  setState(() {
-                    dateToShow = newDate;
-                  });
-                  search(text, dateToShow);
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Choisir une date',
-                      style: GoogleFonts.nunito(
-                        color: Colors.grey,
-                        fontSize: 15,
+          Container(
+            color: Colors.grey[200],
+            padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    DateTime? newDate = await showDatePicker(
+                      context: context,
+                      initialDate: dateToShow,
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2100),
+                    );
+                    // if 'CANCEL' => null
+                    if (newDate == null) return;
+                    // if 'OK' => DateTime
+                    setState(() {
+                      dateToShow = newDate;
+                    });
+                    search(text, dateToShow, startPrice, endPrice);
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Choisir une date',
+                        style: GoogleFonts.nunito(
+                          color: Colors.grey,
+                          fontSize: 15,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      '${dateToShow.day.toString().padLeft(2, '0')} ${dateToShow.month.toString().padLeft(2, '0')} ${dateToShow.year}',
-                      style: GoogleFonts.nunito(
-                        color: Colors.black,
-                        fontSize: 17,
+                      SizedBox(height: 8),
+                      Text(
+                        '${dateToShow.day.toString().padLeft(2, '0')} ${dateToShow.month.toString().padLeft(2, '0')} ${dateToShow.year}',
+                        style: GoogleFonts.nunito(
+                          color: Colors.black,
+                          fontSize: 17,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              InkWell(
-                onTap: () {},
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Choisir un prix',
-                      style: GoogleFonts.nunito(
-                        color: Colors.grey,
-                        fontSize: 15,
+                InkWell(
+                  onTap: () {
+                    //
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          _buildPopupDialog(context),
+                    );
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Choisir un prix',
+                        style: GoogleFonts.nunito(
+                          color: Colors.grey,
+                          fontSize: 15,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 8),
-                    Text(
-                      'prix',
-                      style: GoogleFonts.nunito(
-                        color: Colors.black,
-                        fontSize: 17,
+                      SizedBox(height: 8),
+                      Text(
+                        '${startPrice.toString()}€ - ${endPrice.toString().padLeft(2, '0')}€',
+                        style: GoogleFonts.nunito(
+                          color: Colors.black,
+                          fontSize: 17,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Row(
             children: [
@@ -235,22 +253,33 @@ class SearchSection extends State<MainPage> {
     );
   }
 
-  void search(String text, DateTime dateToShow) {
-    productFinalList = [];
+  void search(String text, DateTime dateToShow, int startPrice, int endPrice) {
+    setState(() {
+      productFinalList = [];
+    });
     List products = productsList;
     String lowerCaseText = text.toLowerCase();
     products.forEach((product) {
       String lowerCaseTitle = product['title'].toLowerCase();
-      if (dateToShow.day == DateTime.now().day) {
+      if (dateToShow.day == DateTime.now().day &&
+          dateToShow.month == DateTime.now().month &&
+          dateToShow.year == DateTime.now().year) {
         if (lowerCaseTitle.contains(lowerCaseText)) {
-          if (!productFinalList.contains(product)) {
-            setState(() {
-              productFinalList.add(product);
-            });
+          if (product['price'] >= startPrice && product['price'] <= endPrice) {
+            if (!productFinalList.contains(product)) {
+              setState(() {
+                productFinalList.add(product);
+              });
+            }
+            // setState(() {
+            //   productFinalList.add(product);
+            // });
           }
         }
       } else if (product['date'].isBefore(dateToShow) &&
-          lowerCaseTitle.contains(lowerCaseText)) {
+          lowerCaseTitle.contains(lowerCaseText) &&
+          product['price'] >= startPrice &&
+          product['price'] <= endPrice) {
         if (!productFinalList.contains(product)) {
           setState(() {
             productFinalList.add(product);
@@ -262,6 +291,68 @@ class SearchSection extends State<MainPage> {
         });
       }
     });
+  }
+
+  Widget _buildPopupDialog(BuildContext context) {
+    return new AlertDialog(
+      title: const Text(
+        'Prix',
+      ),
+      content: new Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            'Entre',
+            style: GoogleFonts.nunito(
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          TextFormField(
+              initialValue: "${startPrice.toString()}",
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(10),
+              ),
+              onChanged: (startPriceText) => setState(() {
+                    startPrice = int.parse(startPriceText);
+                  })),
+          Text(
+            'et',
+            style: GoogleFonts.nunito(
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          TextFormField(
+              initialValue: "${endPrice.toString()}",
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(10),
+              ),
+              onChanged: (endPriceText) => setState(() {
+                    endPrice = int.parse(endPriceText);
+                  })),
+        ],
+      ),
+      actions: <Widget>[
+        new ElevatedButton(
+          onPressed: () {
+            search(text, dateToShow, startPrice, endPrice);
+            Navigator.of(context).pop();
+          },
+          // textColor: Theme.of(context).primaryColor,
+          child: Icon(
+            Icons.check,
+            size: 26,
+          ),
+          style: ElevatedButton.styleFrom(
+            shape: CircleBorder(),
+            padding: EdgeInsets.all(10),
+            primary: d_green,
+          ),
+        ),
+      ],
+    );
   }
 }
 
@@ -337,7 +428,7 @@ class ProductCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  productData['price'] + '\€',
+                  productData['price'].toString() + '\€',
                   style: GoogleFonts.nunito(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
