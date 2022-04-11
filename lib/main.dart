@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:websales/src/auction.page.dart';
-import 'package:websales/src/auth.page.dart';
+import 'package:websales/src/auth.signIn.dart';
 import 'package:websales/src/auth.signUp.dart';
 import 'package:websales/src/trade.page.dart';
 // import 'package:websales/calendar_page.dart';

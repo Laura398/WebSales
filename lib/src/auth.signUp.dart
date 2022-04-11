@@ -122,7 +122,7 @@ class Inscription extends State<AuthInscription> {
                     onPressed: () {
                       Navigator.pushNamed(
                         context,
-                        '/auth',
+                        '/',
                       );
                     },
                   ),
