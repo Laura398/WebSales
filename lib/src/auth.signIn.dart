@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:websales/main.dart';
 
 export 'auth.signIn.dart';
@@ -45,40 +43,42 @@ class AuthConnexion extends StatefulWidget {
 }
 
 class Connexion extends State<AuthConnexion> {
-  final _formKey = GlobalKey<FormBuilderState>();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       child: Column(
-        key: _formKey,
         children: <Widget>[
-          const Padding(padding: EdgeInsets.all(50)),
-          Container(
-            child: Text(
-              'WEB\$ALES',
-              style: GoogleFonts.nunito(
-                color: Colors.black,
-                fontSize: 50,
-                fontWeight: FontWeight.w800,
-              ),
+          const Padding(padding: EdgeInsets.all(25)),
+          Text(
+            'WEB\$ALES',
+            style: GoogleFonts.nunito(
+              color: colorNav,
+              fontSize: 50,
+              fontWeight: FontWeight.w800,
             ),
           ),
-          // const Text(
-          //   'Connexion',
-          //   style: TextStyle(
-          //     fontSize: 40,
-          //     fontWeight: FontWeight.w800,
-          //   ),
-          // ),
+          const Padding(padding: EdgeInsets.all(20)),
+          const Text(
+            'Connexion',
+            style: TextStyle(
+              fontSize: 30,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
           const Padding(
-            padding: EdgeInsets.all(50),
+            padding: EdgeInsets.all(20),
           ),
           TextFormField(
-              validator: FormBuilderValidators.compose([
-                FormBuilderValidators.required(context),
-                FormBuilderValidators.email(context),
-              ]),
+              validator: (email) {
+                if (isEmailValid(email!)) {
+                  return null;
+                } else {
+                  return 'Email is not valid';
+                }
+              },
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
                 contentPadding: const EdgeInsets.all(18),
@@ -91,10 +91,14 @@ class Connexion extends State<AuthConnexion> {
               )),
           const Padding(padding: EdgeInsets.all(10)),
           TextFormField(
-            validator: FormBuilderValidators.compose([
-              FormBuilderValidators.required(context),
-              FormBuilderValidators.minLength(context, 6),
-            ]),
+            validator: (password) {
+              if (isPasswordValid(password)) {
+                return null;
+              } else {
+                return 'Password is not valid';
+              }
+            },
+            obscureText: true,
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               contentPadding: const EdgeInsets.all(18),
@@ -124,9 +128,8 @@ class Connexion extends State<AuthConnexion> {
                     fontWeight: FontWeight.w800,
                   )),
               onPressed: () {
-                if (_formKey.currentState!.saveAndValidate()) {
-                  print(_formKey.currentState!.value['email']);
-                  print(_formKey.currentState!.value['password']);
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
                 }
               },
             ),
@@ -150,5 +153,13 @@ class Connexion extends State<AuthConnexion> {
         ],
       ),
     );
+  }
+
+  bool isPasswordValid(String? password) => password!.length >= 5;
+  bool isEmailValid(String email) {
+    Pattern pattern =
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    RegExp regex = RegExp(pattern.toString());
+    return regex.hasMatch(email);
   }
 }
