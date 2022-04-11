@@ -171,7 +171,7 @@ class SearchSection extends State<MainPage> {
                       ),
                       SizedBox(height: 8),
                       Text(
-                        '${dateToShow.day.toString().padLeft(2, '0')} ${dateToShow.month.toString().padLeft(2, '0')} ${dateToShow.year}',
+                        '${dateToShow.day.toString().padLeft(2, '0')}/${dateToShow.month.toString().padLeft(2, '0')}/${dateToShow.year}',
                         style: GoogleFonts.nunito(
                           color: Colors.black,
                           fontSize: 17,
