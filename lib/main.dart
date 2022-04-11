@@ -3,10 +3,7 @@ import 'package:websales/src/auction.page.dart';
 import 'package:websales/src/auth.signIn.dart';
 import 'package:websales/src/auth.signUp.dart';
 import 'package:websales/src/trade.page.dart';
-// import 'package:websales/calendar_page.dart';
-
 import 'src/home.page.dart';
-// import 'package:websales/calendar_page.dart';
 
 void main() {
   runApp(const WebSales());
@@ -26,16 +23,16 @@ class WebSales extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       routes: {
-        '/home': (context) => Home(),
-        '/myAuction': (context) => MyAuction(),
-        '/myBids': (context) => MyBids(),
-        '/auth': (context) => Auth(),
-        '/authSignUp': (context) => AuthInscription(),
+        '/home': (context) => const Home(),
+        '/myAuction': (context) => const MyAuction(),
+        '/myBids': (context) => const MyBids(),
+        '/auth': (context) => const Auth(),
+        '/authSignUp': (context) => const AuthInscription(),
       },
-      home: DefaultTabController(
+      home: const DefaultTabController(
         length: 4,
         child: Scaffold(
-          bottomNavigationBar: const TabBar(
+          bottomNavigationBar: TabBar(
             labelColor: colorNav,
             tabs: [
               Tab(icon: Icon(Icons.account_balance)),
