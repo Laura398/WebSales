@@ -24,6 +24,10 @@ class MyBidState extends State<MyBid> {
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
+      body: const SingleChildScrollView(
+        padding: EdgeInsets.only(left: 10, top: 20),
+        child: Text('No Bid yet...'),
+      ),
     );
   }
 }

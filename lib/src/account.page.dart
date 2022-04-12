@@ -12,24 +12,10 @@ class MyAccount extends StatefulWidget {
 class MyAccountState extends State<MyAccount> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'My account',
-          style: GoogleFonts.nunito(
-            color: Colors.black,
-            fontSize: 22,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          child: const MyAccountData(),
-          margin: const EdgeInsets.only(left: 10, right: 10),
-        ),
+    return SingleChildScrollView(
+      child: Container(
+        child: const MyAccountData(),
+        margin: const EdgeInsets.only(left: 10, right: 10),
       ),
     );
   }

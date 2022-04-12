@@ -44,7 +44,7 @@ class WebSales extends StatelessWidget {
             ],
           ),
           body: TabBarView(
-            children: [Home(), MyBid(), MyAuction(), MyAccount()],
+            children: [Home(), MyBid(), MyAuction(), Auth()],
           ),
         ),
       ),
