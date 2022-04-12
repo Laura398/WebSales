@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:websales/src/auction.page.dart';
 import 'package:websales/src/auth.signIn.dart';
 import 'package:websales/src/auth.signUp.dart';
-import 'package:websales/src/trade.page.dart';
+import 'package:websales/src/bid.page.dart';
 import 'src/home.page.dart';
 
 void main() {
@@ -25,7 +25,7 @@ class WebSales extends StatelessWidget {
       routes: {
         '/home': (context) => const Home(),
         '/myAuction': (context) => const MyAuction(),
-        '/myBids': (context) => const MyBids(),
+        '/myBid': (context) => const MyBid(),
         '/auth': (context) => const Auth(),
         '/authSignUp': (context) => const AuthInscription(),
       },
@@ -42,7 +42,7 @@ class WebSales extends StatelessWidget {
             ],
           ),
           body: TabBarView(
-            children: [Home(), MyBids(), MyAuction(), Auth()],
+            children: [Home(), MyBid(), MyAuction(), Auth()],
           ),
         ),
       ),

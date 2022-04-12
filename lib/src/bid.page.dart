@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MyBids extends StatefulWidget {
-  const MyBids({Key? key}) : super(key: key);
+class MyBid extends StatefulWidget {
+  const MyBid({Key? key}) : super(key: key);
 
   @override
-  State<MyBids> createState() => MyBidsState();
+  State<MyBid> createState() => MyBidState();
 }
 
-class MyBidsState extends State<MyBids> {
+class MyBidState extends State<MyBid> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
