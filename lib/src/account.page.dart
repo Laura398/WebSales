@@ -49,25 +49,19 @@ class MyAccountDataState extends State<MyAccountData> {
       child: Column(
         children: <Widget>[
           Container(
-              margin: const EdgeInsets.only(top: 10, left: 200),
-              child: ElevatedButton(
+              margin: const EdgeInsets.only(top: 20, left: 0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                color: colorNav,
+              ),
+              child: IconButton(
                 onPressed: () {},
-                child: const Text('Se déconnecter'),
-                style: TextButton.styleFrom(
-                    alignment: Alignment.center,
-                    elevation: 5,
-                    primary: Colors.black,
-                    backgroundColor: Colors.grey.shade200,
-                    minimumSize: const Size(10, 30),
-                    shape: const BeveledRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(3))),
-                    textStyle: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w800,
-                    )),
+                icon: const Icon(Icons.power_settings_new),
+                iconSize: 32,
+                color: Colors.white,
               )),
           Container(
-            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.only(left: 10, right: 10, top: 12),
             child: Text(
               'Contact',
               style: GoogleFonts.nunito(
@@ -77,7 +71,7 @@ class MyAccountDataState extends State<MyAccountData> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 0),
+            margin: const EdgeInsets.only(top: 12),
             child: Row(
               children: <Widget>[
                 Container(
@@ -97,7 +91,7 @@ class MyAccountDataState extends State<MyAccountData> {
                   ),
                 ),
                 const Padding(padding: EdgeInsets.all(10)),
-                Container(
+                SizedBox(
                   width: 150,
                   child: TextFormField(
                     decoration: InputDecoration(
@@ -116,7 +110,7 @@ class MyAccountDataState extends State<MyAccountData> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+            margin: const EdgeInsets.only(top: 18, left: 10, right: 10),
             child: TextFormField(
               validator: (email) {
                 if (isEmailValid(email!)) {
@@ -126,7 +120,7 @@ class MyAccountDataState extends State<MyAccountData> {
                 }
               },
               decoration: InputDecoration(
-                labelText: 'e-mail',
+                labelText: 'E-mail',
                 border: const OutlineInputBorder(),
                 contentPadding: const EdgeInsets.all(18),
                 labelStyle: GoogleFonts.nunito(
@@ -138,7 +132,7 @@ class MyAccountDataState extends State<MyAccountData> {
             ),
           ),
           Container(
-            margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+            margin: const EdgeInsets.only(top: 18, left: 10, right: 10),
             child: TextFormField(
               keyboardType: TextInputType.phone,
               maxLength: 10,
@@ -179,49 +173,47 @@ class MyAccountDataState extends State<MyAccountData> {
               ),
             ),
           ),
-          Container(
-            child: Row(
-              children: <Widget>[
-                Container(
-                  width: 150,
-                  margin: const EdgeInsets.only(left: 10),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: 'Ville',
-                      border: const OutlineInputBorder(),
-                      contentPadding: const EdgeInsets.all(18),
-                      labelStyle: GoogleFonts.nunito(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                      ),
+          Row(
+            children: <Widget>[
+              Container(
+                width: 150,
+                margin: const EdgeInsets.only(left: 10),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Ville',
+                    border: const OutlineInputBorder(),
+                    contentPadding: const EdgeInsets.all(18),
+                    labelStyle: GoogleFonts.nunito(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                 ),
-                const Padding(padding: EdgeInsets.all(10)),
-                Container(
-                  width: 150,
-                  margin: const EdgeInsets.only(top: 21.5),
-                  child: TextFormField(
-                    keyboardType: TextInputType.phone,
-                    maxLength: 5,
-                    decoration: InputDecoration(
-                      labelText: 'Code Postale',
-                      border: const OutlineInputBorder(),
-                      contentPadding: const EdgeInsets.all(18),
-                      labelStyle: GoogleFonts.nunito(
-                        color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w800,
-                      ),
+              ),
+              const Padding(padding: EdgeInsets.all(10)),
+              Container(
+                width: 150,
+                margin: const EdgeInsets.only(top: 21.5),
+                child: TextFormField(
+                  keyboardType: TextInputType.phone,
+                  maxLength: 5,
+                  decoration: InputDecoration(
+                    labelText: 'Code Postale',
+                    border: const OutlineInputBorder(),
+                    contentPadding: const EdgeInsets.all(18),
+                    labelStyle: GoogleFonts.nunito(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           Container(
-              margin: const EdgeInsets.only(top: 0, left: 10, right: 10),
+              margin: const EdgeInsets.only(left: 10, right: 10),
               width: 150,
               child: ElevatedButton(
                 onPressed: () {},
