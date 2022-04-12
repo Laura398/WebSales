@@ -43,6 +43,9 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class MainPage extends StatefulWidget {
+  const MainPage({Key? key}) : super(key: key);
+
+  @override
   SearchSection createState() => SearchSection();
 }
 
@@ -92,7 +95,7 @@ class SearchSection extends State<MainPage> {
   int startPrice = 1;
   int endPrice = 1000;
   List productFinalList = [];
-  RangeValues _currentRangeValues = const RangeValues(1, 1000);
+  final RangeValues _currentRangeValues = const RangeValues(1, 1000);
 
   @override
   void initState() {
@@ -136,7 +139,7 @@ class SearchSection extends State<MainPage> {
               ),
             ],
           ),
-          SizedBox(height: 50),
+          SizedBox(height: 30),
           Container(
             color: Colors.grey[200],
             padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
