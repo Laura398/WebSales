@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:websales/src/add.page.dart';
 import 'package:websales/src/auction.page.dart';
 import 'package:websales/src/auth.signIn.dart';
 import 'package:websales/src/auth.signUp.dart';
@@ -30,6 +31,7 @@ class WebSales extends StatelessWidget {
         '/auth': (context) => const Auth(),
         '/authSignUp': (context) => const AuthInscription(),
         '/myAccount': (context) => const MyAccount(),
+        '/addBid': (context) => const Add(),
       },
       home: const DefaultTabController(
         length: 4,
