@@ -1,9 +1,26 @@
 // import 'dart:html';
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:http/http.dart' as http;
+import 'package:websales/models/product.model.dart';
+
 const d_green = Color.fromARGB(255, 139, 199, 233);
+
+String url = "10.31.37.28:3000";
+
+// void myFunction() async {
+//     var data = {};
+//     var response = await http.get(Uri.parse(url));
+//     if (response.statusCode == 200) {
+//         print(reponse.body);
+//     } else {
+//        print('A network error occurred');
+//     }
+// }
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -50,57 +67,88 @@ class MainPage extends StatefulWidget {
 }
 
 class SearchSection extends State<MainPage> {
-  final List productsList = [
-    {
-      'title': 'Produit 1',
-      'firstname': 'Jeam-Michel',
-      'lastname': 'MACHIN',
-      'date': DateTime(2023, 1, 1),
-      'buyers': 36,
-      'picture': 'assets/images/image1.jpg',
-      'price': 180,
-    },
-    {
-      'title': 'Produit 2',
-      'firstname': 'Bérénice',
-      'lastname': 'TRUC',
-      'date': DateTime(2022, 6, 1),
-      'buyers': 36,
-      'picture': 'assets/images/image2.jpg',
-      'price': 100,
-    },
-    {
-      'title': 'Produit 3',
-      'firstname': 'Jeam-Michel',
-      'lastname': 'MACHIN',
-      'date': DateTime(2023, 1, 1),
-      'buyers': 36,
-      'picture': 'assets/images/image1.jpg',
-      'price': 500,
-    },
-    {
-      'title': 'Produit 4',
-      'firstname': 'Bérénice',
-      'lastname': 'TRUC',
-      'date': DateTime(2022, 6, 1),
-      'buyers': 36,
-      'picture': 'assets/images/image2.jpg',
-      'price': 800,
-    },
-  ];
+  // final List productsList =
+  // [
+  //   {
+  //     'title': 'Produit 1',
+  //     'firstname': 'Jeam-Michel',
+  //     'lastname': 'MACHIN',
+  //     'date': DateTime(2023, 1, 1),
+  //     'buyers': 36,
+  //     'picture': 'assets/images/image1.jpg',
+  //     'price': 180,
+  //   },
+  //   {
+  //     'title': 'Produit 2',
+  //     'firstname': 'Bérénice',
+  //     'lastname': 'TRUC',
+  //     'date': DateTime(2022, 6, 1),
+  //     'buyers': 36,
+  //     'picture': 'assets/images/image2.jpg',
+  //     'price': 100,
+  //   },
+  //   {
+  //     'title': 'Produit 3',
+  //     'firstname': 'Jeam-Michel',
+  //     'lastname': 'MACHIN',
+  //     'date': DateTime(2023, 1, 1),
+  //     'buyers': 36,
+  //     'picture': 'assets/images/image1.jpg',
+  //     'price': 500,
+  //   },
+  //   {
+  //     'title': 'Produit 4',
+  //     'firstname': 'Bérénice',
+  //     'lastname': 'TRUC',
+  //     'date': DateTime(2022, 6, 1),
+  //     'buyers': 36,
+  //     'picture': 'assets/images/image2.jpg',
+  //     'price': 800,
+  //   },
+  // ];
 
   DateTime dateToShow = DateTime.now();
   String text = '';
   int price = 1;
   int startPrice = 1;
-  int endPrice = 1000;
+  int endPrice = 10000;
+  List productsList = [];
   List productFinalList = [];
-  final RangeValues _currentRangeValues = const RangeValues(1, 1000);
+  RangeValues _currentRangeValues = const RangeValues(1, 10000);
+
+  getData() async {
+    try {
+      var response = await http.get(Uri.http(url, "/api/products"));
+      // print("TEST ok");
+      // print(response);
+      // print(response.statusCode);
+      // print(response.body);
+      List<Product> products = List<Product>.from(
+          json.decode(response.body).map((p) => Product.fromJson(p)));
+      // List titles = [];
+      // products.forEach((p) => titles.add(p.title));
+      // print("TITLES");
+      // print(titles)
+      return products;
+    } catch (err) {
+      print(err);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    productFinalList = productsList;
+
+    getData().then((p) {
+      setState(() {
+        productsList = p;
+        productFinalList = p;
+        print("1");
+        print(productsList);
+        print("2");
+        print(productFinalList);
+      });
+    });
   }
 
   @override
@@ -118,6 +166,7 @@ class SearchSection extends State<MainPage> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(30),
+                    border: Border.all(color: Colors.grey.shade100),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.shade300,
@@ -141,7 +190,24 @@ class SearchSection extends State<MainPage> {
           ),
           SizedBox(height: 30),
           Container(
-            color: Colors.grey[200],
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.all(
+                Radius.circular(18),
+              ),
+              border: Border.all(
+                color: Colors.grey.shade300,
+                width: 1,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.shade200,
+                  spreadRadius: 1,
+                  blurRadius: 2,
+                  offset: Offset(0, 1),
+                ),
+              ],
+            ),
             padding: EdgeInsets.fromLTRB(10, 20, 10, 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,7 +292,7 @@ class SearchSection extends State<MainPage> {
                   child: Column(
                     children: [
                       Container(
-                        height: 50,
+                        height: 25,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -263,12 +329,17 @@ class SearchSection extends State<MainPage> {
     List products = productsList;
     String lowerCaseText = text.toLowerCase();
     products.forEach((product) {
-      String lowerCaseTitle = product['title'].toLowerCase();
+      print(DateTime.parse(product.endOfTheAuction));
+      print(DateTime.parse(dateToShow.toString()));
+
+      print(dateToShow);
+      String lowerCaseTitle = product.title.toLowerCase();
       if (dateToShow.day == DateTime.now().day &&
           dateToShow.month == DateTime.now().month &&
           dateToShow.year == DateTime.now().year) {
         if (lowerCaseTitle.contains(lowerCaseText)) {
-          if (product['price'] >= startPrice && product['price'] <= endPrice) {
+          if (product.basePrice >= startPrice &&
+              product.basePrice <= endPrice) {
             if (!productFinalList.contains(product)) {
               setState(() {
                 productFinalList.add(product);
@@ -279,10 +350,11 @@ class SearchSection extends State<MainPage> {
             // });
           }
         }
-      } else if (product['date'].isBefore(dateToShow) &&
+      } else if (DateTime.parse(product.endOfTheAuction)
+              .isBefore(DateTime.parse(dateToShow.toString())) &&
           lowerCaseTitle.contains(lowerCaseText) &&
-          product['price'] >= startPrice &&
-          product['price'] <= endPrice) {
+          product.basePrice >= startPrice &&
+          product.basePrice <= endPrice) {
         if (!productFinalList.contains(product)) {
           setState(() {
             productFinalList.add(product);
@@ -360,8 +432,10 @@ class SearchSection extends State<MainPage> {
 }
 
 class ProductCard extends StatelessWidget {
-  final Map productData;
+  final Product productData;
+
   ProductCard(this.productData);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -393,7 +467,7 @@ class ProductCard extends StatelessWidget {
               ),
               image: DecorationImage(
                 image: AssetImage(
-                  productData['picture'],
+                  "assets/images/image1.jpg",
                 ),
                 // image: NetworkImage(productData['picture']), // if image is online
                 fit: BoxFit.cover,
@@ -424,14 +498,14 @@ class ProductCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  productData['title'],
+                  productData.title!,
                   style: GoogleFonts.nunito(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
                 Text(
-                  productData['price'].toString() + '\€',
+                  productData.basePrice.toString() + '\€',
                   style: GoogleFonts.nunito(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
@@ -446,7 +520,7 @@ class ProductCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  productData['firstname'] + " " + productData['lastname'],
+                  "Nom Prénom",
                   style: GoogleFonts.nunito(
                     fontSize: 14,
                     color: Colors.grey[500],
@@ -459,17 +533,32 @@ class ProductCard extends StatelessWidget {
                       color: d_green,
                       size: 14.0,
                     ),
-                    Text(
-                      productData['date'].day.toString().padLeft(2, '0') +
-                          "/" +
-                          productData['date'].month.toString().padLeft(2, '0') +
-                          "/" +
-                          productData['date'].year.toString(),
-                      style: GoogleFonts.nunito(
-                        fontSize: 14,
-                        color: Colors.grey[500],
-                      ),
-                    ),
+                    productData.endOfTheAuction != null
+                        ? Text(
+                            DateTime.parse(productData.endOfTheAuction!)
+                                    .day
+                                    .toString()
+                                    .padLeft(2, '0') +
+                                "/" +
+                                DateTime.parse(productData.endOfTheAuction!)
+                                    .month
+                                    .toString()
+                                    .padLeft(2, '0') +
+                                "/" +
+                                DateTime.parse(productData.endOfTheAuction!)
+                                    .year
+                                    .toString(),
+                            // productData['date'].day.toString().padLeft(2, '0') +
+                            //     "/" +
+                            //     productData['date'].month.toString().padLeft(2, '0') +
+                            //     "/" +
+                            //     productData['date'].year.toString(),
+                            style: GoogleFonts.nunito(
+                              fontSize: 14,
+                              color: Colors.grey[500],
+                            ),
+                          )
+                        : Container(),
                   ],
                 ),
               ],
@@ -483,7 +572,7 @@ class ProductCard extends StatelessWidget {
                   width: 20,
                 ),
                 Text(
-                  productData['buyers'].toString() + ' acheteurs',
+                  productData.bidders!.length.toString() + ' acheteurs',
                   style: GoogleFonts.nunito(
                     fontSize: 14,
                     color: Colors.grey[500],
