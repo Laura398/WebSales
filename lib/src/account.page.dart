@@ -200,7 +200,7 @@ class MyAccountDataState extends State<MyAccountData> {
           ),
           Container(
               margin: const EdgeInsets.only(left: 10, right: 10),
-              width: 150,
+              width: 180,
               child: ElevatedButton(
                 onPressed: () {},
                 child: const Text('Confirmer'),

@@ -5,12 +5,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:websales/main.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'home.page.dart';
+
 class Add extends StatefulWidget {
   const Add({Key? key}) : super(key: key);
 
   @override
   State<Add> createState() => AddState();
 }
+
+DateTime dateToShow = DateTime.now();
 
 class AddState extends State<Add> {
   @override
@@ -59,7 +63,7 @@ class AddPageState extends State<AddPage> {
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               contentPadding: const EdgeInsets.all(18),
-              labelText: 'Title',
+              labelText: 'Titre',
               labelStyle: GoogleFonts.nunito(
                 color: Colors.black,
                 fontSize: 18,
@@ -80,19 +84,6 @@ class AddPageState extends State<AddPage> {
               ),
             ),
           ),
-          const Padding(padding: EdgeInsets.all(12)),
-          TextFormField(
-            decoration: InputDecoration(
-              border: const OutlineInputBorder(),
-              contentPadding: const EdgeInsets.all(18),
-              labelText: 'Date fin d\'enchère',
-              labelStyle: GoogleFonts.nunito(
-                color: Colors.black,
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-          ),
           Container(
             margin: const EdgeInsets.only(top: 20),
             child: Row(children: <Widget>[
@@ -100,10 +91,11 @@ class AddPageState extends State<AddPage> {
                 width: 150,
                 margin: const EdgeInsets.only(left: 0),
                 child: TextFormField(
+                  keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     contentPadding: const EdgeInsets.all(18),
-                    labelText: 'Price',
+                    labelText: 'Prix',
                     labelStyle: GoogleFonts.nunito(
                       color: Colors.black,
                       fontSize: 18,
@@ -112,10 +104,45 @@ class AddPageState extends State<AddPage> {
                   ),
                 ),
               ),
+              const Padding(padding: EdgeInsets.only(right: 10)),
+              const Tab(icon: Icon(Icons.euro_symbol)),
             ]),
           ),
-          Container(
-              child: Row(children: <Widget>[
+          const Padding(padding: EdgeInsets.all(12)),
+          InkWell(
+            onTap: () async {
+              DateTime? newDate = await showDatePicker(
+                context: context,
+                initialDate: dateToShow,
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2100),
+              );
+              if (newDate == null) return;
+              setState(() {
+                dateToShow = newDate;
+              });
+            },
+            child: Column(
+              children: [
+                Text(
+                  'Choisir une date de fin d\'enchère :',
+                  style: GoogleFonts.nunito(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                Text(
+                  '${dateToShow.day.toString().padLeft(2, '0')}/${dateToShow.month.toString().padLeft(2, '0')}/${dateToShow.year}',
+                  style: GoogleFonts.nunito(
+                    color: Colors.black,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Row(children: <Widget>[
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(
@@ -137,7 +164,7 @@ class AddPageState extends State<AddPage> {
                 ),
               ),
             ),
-            const Padding(padding: EdgeInsets.only(top: 120, right: 170)),
+            const Padding(padding: EdgeInsets.only(top: 100, right: 140)),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(
@@ -159,7 +186,7 @@ class AddPageState extends State<AddPage> {
                 ),
               ),
             )
-          ]))
+          ])
         ],
       ),
     );
