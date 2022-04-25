@@ -3,14 +3,13 @@ import 'package:websales/models/bidders.model.dart';
 class Product {
   String? sId;
   String? sellerId;
-  String? title;
-  String? picture;
   String? seller_first_name;
   String? seller_last_name;
-  int? iV;
+  String? title;
+  String? picture;
+  String? description;
   int? basePrice;
   String? beginningOfTheAuction;
-  String? description;
   String? endOfTheAuction;
   List<Bidders>? bidders;
 
@@ -21,7 +20,6 @@ class Product {
       this.picture,
       this.seller_first_name,
       this.seller_last_name,
-      this.iV,
       this.basePrice,
       this.beginningOfTheAuction,
       this.description,
@@ -32,7 +30,6 @@ class Product {
     sId = json['_id'];
     sellerId = json['seller_id'];
     title = json['title'];
-    iV = json['__v'];
     picture = json['picture'];
     seller_first_name = json['seller_first_name'];
     seller_last_name = json['seller_last_name'];
@@ -56,7 +53,6 @@ class Product {
     data['picture'] = this.picture;
     data['seller_first_name'] = this.seller_first_name;
     data['seller_last_name'] = this.seller_last_name;
-    data['__v'] = this.iV;
     data['base_price'] = this.basePrice;
     data['beginning_of_the_auction'] = this.beginningOfTheAuction;
     data['description'] = this.description;
