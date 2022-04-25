@@ -111,9 +111,10 @@ class SearchSection extends State<MainPage> {
       var response = await http.get(Uri.http(url, "/api/products"));
       List<Product> products = List<Product>.from(
           json.decode(response.body).map((p) => Product.fromJson(p)));
+      print("TEST");
       return products;
     } catch (err) {
-      print(err);
+      print("ERROR : " + err.toString());
     }
   }
 
