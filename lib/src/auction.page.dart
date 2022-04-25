@@ -26,7 +26,7 @@ class MyAuctionState extends State<MyAuction> {
         backgroundColor: Colors.white,
       ),
       body: const SingleChildScrollView(
-        padding: EdgeInsets.only(left: 10, top: 20),
+        padding: EdgeInsets.only(left: 10, top: 20, right: 10),
         child: MyAuctionData(),
       ),
     );

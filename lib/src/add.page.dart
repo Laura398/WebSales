@@ -7,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 
 import 'home.page.dart';
 
+import 'package:flutter/services.dart';
+
 class Add extends StatefulWidget {
   const Add({Key? key}) : super(key: key);
 
@@ -22,7 +24,7 @@ class AddState extends State<Add> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add bid',
+          'Add auction',
           style: GoogleFonts.nunito(
             color: Colors.black,
             fontSize: 22,
@@ -56,9 +58,9 @@ class AddPageState extends State<AddPage> {
     return Form(
       child: Column(
         children: <Widget>[
-          const Padding(padding: EdgeInsets.all(12)),
+          const Padding(padding: EdgeInsets.all(10)),
           imageProduct(),
-          const Padding(padding: EdgeInsets.all(25)),
+          const Padding(padding: EdgeInsets.all(20)),
           TextFormField(
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
@@ -92,6 +94,7 @@ class AddPageState extends State<AddPage> {
                 margin: const EdgeInsets.only(left: 0),
                 child: TextFormField(
                   keyboardType: TextInputType.phone,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: InputDecoration(
                     border: const OutlineInputBorder(),
                     contentPadding: const EdgeInsets.all(18),
@@ -157,7 +160,7 @@ class AddPageState extends State<AddPage> {
                 primary: Colors.white,
                 backgroundColor: colorNav,
                 shape: BeveledRectangleBorder(
-                    borderRadius: BorderRadius.circular(3)),
+                    borderRadius: BorderRadius.circular(1)),
                 textStyle: const TextStyle(
                   fontSize: 30,
                   fontWeight: FontWeight.w800,
@@ -179,11 +182,7 @@ class AddPageState extends State<AddPage> {
                 primary: Colors.white,
                 backgroundColor: colorNav,
                 shape: BeveledRectangleBorder(
-                    borderRadius: BorderRadius.circular(5)),
-                textStyle: const TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w800,
-                ),
+                    borderRadius: BorderRadius.circular(1)),
               ),
             )
           ])
@@ -197,12 +196,46 @@ class AddPageState extends State<AddPage> {
       child: Stack(
         children: <Widget>[
           _image == null
-              ? const CircleAvatar(
-                  radius: 80,
-                  backgroundImage: AssetImage('assets/images/logo2.png'))
-              : CircleAvatar(
-                  radius: 80,
-                  backgroundImage: FileImage(File(_image!.path)),
+              ? Container(
+                  padding: const EdgeInsets.only(left: 0),
+                  width: 400,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.grey.shade100),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade300,
+                        blurRadius: 4,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                    image: const DecorationImage(
+                      image: AssetImage('assets/images/logo.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                )
+              : Container(
+                  padding: const EdgeInsets.only(left: 0),
+                  width: 400,
+                  height: 200,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey.shade100),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.shade300,
+                          blurRadius: 4,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
+                      image: DecorationImage(
+                        image: FileImage(File(_image!.path)),
+                        fit: BoxFit.cover,
+                      )),
                 ),
           Positioned(
               child: InkWell(
@@ -215,7 +248,7 @@ class AddPageState extends State<AddPage> {
                   child: const Icon(
                     Icons.camera_alt,
                     color: colorNav,
-                    size: 30,
+                    size: 32,
                   ))),
         ],
       ),
@@ -224,18 +257,18 @@ class AddPageState extends State<AddPage> {
 
   Widget bottomSheet(context) {
     return Container(
-      height: 90,
+      height: 80,
       width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
       child: Column(children: <Widget>[
         const Text(
           'Choisissez une image',
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 18,
           ),
         ),
         const SizedBox(
-          height: 10,
+          height: 5,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,

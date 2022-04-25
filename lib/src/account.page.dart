@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:websales/main.dart';
 
@@ -121,6 +122,7 @@ class MyAccountDataState extends State<MyAccountData> {
             margin: const EdgeInsets.only(top: 18, left: 10, right: 10),
             child: TextFormField(
               keyboardType: TextInputType.phone,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               maxLength: 10,
               decoration: InputDecoration(
                 labelText: 'Numéro de téléphone',
@@ -183,6 +185,7 @@ class MyAccountDataState extends State<MyAccountData> {
                 margin: const EdgeInsets.only(top: 21.5),
                 child: TextFormField(
                   keyboardType: TextInputType.phone,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   maxLength: 5,
                   decoration: InputDecoration(
                     labelText: 'Code Postale',

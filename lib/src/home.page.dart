@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:http/http.dart' as http;
@@ -10,7 +11,7 @@ import 'package:websales/models/product.model.dart';
 
 const d_green = Color.fromARGB(255, 139, 199, 233);
 
-String url = "10.31.37.28:3000";
+String url = "10.31.37.17:3000";
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -368,6 +369,7 @@ class SearchSection extends State<MainPage> {
           ),
           TextFormField(
               keyboardType: TextInputType.phone,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               initialValue: "${startPrice.toString()}",
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(10),
@@ -384,6 +386,7 @@ class SearchSection extends State<MainPage> {
           ),
           TextFormField(
               keyboardType: TextInputType.phone,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
               initialValue: "${endPrice.toString()}",
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(10),

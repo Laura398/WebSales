@@ -29,8 +29,9 @@ class AuthState extends State<Auth> {
           centerTitle: true,
           backgroundColor: Colors.white,
         ),
-        body: SingleChildScrollView(
-          child: logged ? MyAccount() : AuthConnexion(),
+        body: const SingleChildScrollView(
+          // child: logged ? MyAccount() : AuthConnexion(),
+          child: AuthConnexion(),
         ));
   }
 }
