@@ -27,47 +27,18 @@ class MyBidState extends State<MyBid> {
       ),
       body: const SingleChildScrollView(
         padding: EdgeInsets.only(left: 10, top: 20, right: 10),
-        child: MyBidData(),
+        // child: MyBidData(),
       ),
     );
   }
 }
 
-class MyBidData extends StatefulWidget {
-  const MyBidData({Key? key}) : super(key: key);
+// class MyBidData extends StatefulWidget {
+//   const MyBidData({Key? key}) : super(key: key);
 
-  @override
-  State<StatefulWidget> createState() => MyBidDataState();
-}
+//   @override
+//   State<StatefulWidget> createState() => MyBidDataState();
+// }
 
-class MyBidDataState extends State<MyBidData> {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                '/addBid',
-              );
-            },
-            child: const Text('Ajouter une offre'),
-            style: TextButton.styleFrom(
-              alignment: Alignment.center,
-              elevation: 10,
-              primary: Colors.white,
-              backgroundColor: colorNav,
-              minimumSize: const Size.fromHeight(42),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(25),
-                ),
-              ),
-              textStyle: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-              ),
-            )));
-  }
-}
+// class MyBidDataState extends State<MyBidData> {
+// }

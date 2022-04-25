@@ -31,7 +31,7 @@ class WebSales extends StatelessWidget {
         '/auth': (context) => const Auth(),
         '/authSignUp': (context) => const AuthInscription(),
         '/myAccount': (context) => const MyAccount(),
-        '/addBid': (context) => const Add(),
+        '/addAuction': (context) => const Add(),
       },
       home: const DefaultTabController(
         length: 4,
@@ -40,8 +40,8 @@ class WebSales extends StatelessWidget {
             labelColor: colorNav,
             tabs: [
               Tab(icon: Icon(Icons.account_balance)),
-              Tab(icon: Icon(Icons.card_travel)),
               Tab(icon: Icon(Icons.add_shopping_cart)),
+              Tab(icon: Icon(Icons.card_travel)),
               Tab(icon: Icon(Icons.person)),
             ],
           ),
