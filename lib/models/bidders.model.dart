@@ -1,6 +1,6 @@
 class Bidders {
   String? userId;
-  double? price;
+  int? price;
 
   Bidders({this.userId, this.price});
 

@@ -4,6 +4,9 @@ class Product {
   String? sId;
   String? sellerId;
   String? title;
+  String? picture;
+  String? seller_first_name;
+  String? seller_last_name;
   int? iV;
   int? basePrice;
   String? beginningOfTheAuction;
@@ -15,6 +18,9 @@ class Product {
       {this.sId,
       this.sellerId,
       this.title,
+      this.picture,
+      this.seller_first_name,
+      this.seller_last_name,
       this.iV,
       this.basePrice,
       this.beginningOfTheAuction,
@@ -27,6 +33,9 @@ class Product {
     sellerId = json['seller_id'];
     title = json['title'];
     iV = json['__v'];
+    picture = json['picture'];
+    seller_first_name = json['seller_first_name'];
+    seller_last_name = json['seller_last_name'];
     basePrice = json['base_price'];
     beginningOfTheAuction = json['beginning_of_the_auction'];
     description = json['description'];
@@ -44,6 +53,9 @@ class Product {
     data['_id'] = this.sId;
     data['seller_id'] = this.sellerId;
     data['title'] = this.title;
+    data['picture'] = this.picture;
+    data['seller_first_name'] = this.seller_first_name;
+    data['seller_last_name'] = this.seller_last_name;
     data['__v'] = this.iV;
     data['base_price'] = this.basePrice;
     data['beginning_of_the_auction'] = this.beginningOfTheAuction;
