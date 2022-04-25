@@ -12,16 +12,6 @@ const d_green = Color.fromARGB(255, 139, 199, 233);
 
 String url = "10.31.37.28:3000";
 
-// void myFunction() async {
-//     var data = {};
-//     var response = await http.get(Uri.parse(url));
-//     if (response.statusCode == 200) {
-//         print(reponse.body);
-//     } else {
-//        print('A network error occurred');
-//     }
-// }
-
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -119,16 +109,8 @@ class SearchSection extends State<MainPage> {
   getData() async {
     try {
       var response = await http.get(Uri.http(url, "/api/products"));
-      // print("TEST ok");
-      // print(response);
-      // print(response.statusCode);
-      // print(response.body);
       List<Product> products = List<Product>.from(
           json.decode(response.body).map((p) => Product.fromJson(p)));
-      // List titles = [];
-      // products.forEach((p) => titles.add(p.title));
-      // print("TITLES");
-      // print(titles)
       return products;
     } catch (err) {
       print(err);
@@ -143,10 +125,6 @@ class SearchSection extends State<MainPage> {
       setState(() {
         productsList = p;
         productFinalList = p;
-        print("1");
-        print(productsList);
-        print("2");
-        print(productFinalList);
       });
     });
   }
@@ -314,7 +292,15 @@ class SearchSection extends State<MainPage> {
           ),
           Column(
             children: productFinalList
-                .map((product) => ProductCard(product))
+                .map((product) => GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/product',
+                        arguments: {'product': product},
+                      );
+                    },
+                    child: ProductCard(product)))
                 .toList(),
           ),
         ],
@@ -329,10 +315,6 @@ class SearchSection extends State<MainPage> {
     List products = productsList;
     String lowerCaseText = text.toLowerCase();
     products.forEach((product) {
-      print(DateTime.parse(product.endOfTheAuction));
-      print(DateTime.parse(dateToShow.toString()));
-
-      print(dateToShow);
       String lowerCaseTitle = product.title.toLowerCase();
       if (dateToShow.day == DateTime.now().day &&
           dateToShow.month == DateTime.now().month &&
@@ -385,6 +367,7 @@ class SearchSection extends State<MainPage> {
             ),
           ),
           TextFormField(
+              keyboardType: TextInputType.phone,
               initialValue: "${startPrice.toString()}",
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(10),
@@ -400,6 +383,7 @@ class SearchSection extends State<MainPage> {
             ),
           ),
           TextFormField(
+              keyboardType: TextInputType.phone,
               initialValue: "${endPrice.toString()}",
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(10),
@@ -466,30 +450,15 @@ class ProductCard extends StatelessWidget {
                 topRight: Radius.circular(18),
               ),
               image: DecorationImage(
-                image: AssetImage(
-                  "assets/images/image1.jpg",
-                ),
-                // image: NetworkImage(productData['picture']), // if image is online
+                // image: Image.network(
+                //   "${productData.picture}",
+                // ),
+                image: productData.picture != null
+                    ? NetworkImage(productData.picture.toString())
+                    : NetworkImage(
+                        "https://www.referenseo.com/wp-content/uploads/2019/03/image-attractive-960x540.jpg"), // if image is online
                 fit: BoxFit.cover,
               ), // if image is local
-            ),
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 5,
-                  right: -15,
-                  child: MaterialButton(
-                    color: Colors.white,
-                    shape: CircleBorder(),
-                    onPressed: () {},
-                    child: Icon(
-                      Icons.favorite_outline_rounded,
-                      color: d_green,
-                      size: 20,
-                    ),
-                  ),
-                )
-              ],
             ),
           ),
           Container(
@@ -520,7 +489,7 @@ class ProductCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "Nom Prénom",
+                  "${productData.seller_first_name} ${productData.seller_last_name}",
                   style: GoogleFonts.nunito(
                     fontSize: 14,
                     color: Colors.grey[500],

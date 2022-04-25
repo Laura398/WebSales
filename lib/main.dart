@@ -3,6 +3,7 @@ import 'package:websales/src/auction.page.dart';
 import 'package:websales/src/auth.signIn.dart';
 import 'package:websales/src/auth.signUp.dart';
 import 'package:websales/src/bid.page.dart';
+import 'package:websales/src/product.page.dart';
 import 'src/account.page.dart';
 import 'src/home.page.dart';
 
@@ -25,6 +26,7 @@ class WebSales extends StatelessWidget {
       ),
       routes: {
         '/home': (context) => const Home(),
+        '/product': (context) => const OneProduct(),
         '/myAuction': (context) => const MyAuction(),
         '/myBid': (context) => const MyBid(),
         '/auth': (context) => const Auth(),
