@@ -7,6 +7,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:websales/models/product.model.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 String url = "10.31.32.47:3000";
 
 const d_green = Color.fromARGB(255, 139, 199, 233);
@@ -25,18 +27,22 @@ class StateOneProduct extends State<OneProduct> {
   updateBid(myBidPrice) async {
     print(url + "/api/products/bids/$productId");
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString("token");
+      print(token);
       print(jsonEncode(myBidPrice));
-      await http.patch(
+      var response = await http.patch(
         Uri.http(url, "/api/products/$productId"),
         body: jsonEncode({
-          "price": myBidPrice,
+          "bidder_bid_amount": jsonEncode(myBidPrice),
         }),
         headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
         },
       );
       print("TEST");
+      print(response);
       // return response;
     } catch (err) {
       print("ERROR : " + err.toString());
