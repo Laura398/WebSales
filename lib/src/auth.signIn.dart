@@ -5,34 +5,62 @@ import 'package:websales/src/account.page.dart';
 
 export 'auth.signIn.dart';
 
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:websales/models/product.model.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+String url = "10.31.32.47:3000";
+
 class Auth extends StatefulWidget {
   const Auth({Key? key}) : super(key: key);
   @override
   State<Auth> createState() => AuthState();
 }
 
+bool logged = false;
+
 class AuthState extends State<Auth> {
-  bool logged = true;
+  @override
+  initState() {
+    super.initState();
+    getUserToken();
+  }
+
+  void getUserToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString("token");
+    if (token != null) {
+      setState(() {
+        logged = true;
+      });
+      Navigator.pushReplacementNamed(context, '/myAccount');
+    }
+    print(token);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            logged ? 'Profile' : 'Authentication',
-            style: GoogleFonts.nunito(
-              color: Colors.black,
-              fontSize: 22,
-              fontWeight: FontWeight.w800,
-            ),
+      appBar: AppBar(
+        title: Text(
+          logged ? 'Profile' : 'Authentication',
+          style: GoogleFonts.nunito(
+            color: Colors.black,
+            fontSize: 22,
+            fontWeight: FontWeight.w800,
           ),
-          centerTitle: true,
-          backgroundColor: Colors.white,
         ),
-        body: const SingleChildScrollView(
-          // child: logged ? MyAccount() : AuthConnexion(),
-          child: AuthConnexion(),
-        ));
+        centerTitle: true,
+        backgroundColor: Colors.white,
+      ),
+      body: const SingleChildScrollView(
+        // child: logged ? MyAccount() : AuthConnexion(),
+        child: AuthConnexion(),
+      ),
+    );
   }
 }
 
@@ -45,8 +73,36 @@ class AuthConnexion extends StatefulWidget {
 class Connexion extends State<AuthConnexion> {
   final _formKey = GlobalKey<FormState>();
 
+  logIn(finalEmail, finalPassword) async {
+    try {
+      var response = await http.post(
+        Uri.http(url, "/api/users/login"),
+        body: jsonEncode({
+          "email": finalEmail,
+          "password": finalPassword,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+      );
+      print("TEST RESPONSE");
+      var data = json.decode(response.body);
+      print(data['token']);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('token', data['token']);
+      logged = true;
+      Navigator.pushReplacementNamed(context, '/');
+    } catch (err) {
+      print("ERROR : " + err.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    String? finalEmail = "";
+    String? finalPassword = "";
+
     return Container(
       padding: const EdgeInsets.only(left: 30, right: 30),
       child: Form(
@@ -58,7 +114,7 @@ class Connexion extends State<AuthConnexion> {
               'WEB\$ALES',
               style: GoogleFonts.nunito(
                 color: colorNav,
-                fontSize: 50,
+                fontSize: 45,
                 fontWeight: FontWeight.w800,
               ),
             ),
@@ -75,6 +131,7 @@ class Connexion extends State<AuthConnexion> {
             ),
             TextFormField(
                 validator: (email) {
+                  finalEmail = email;
                   if (isEmailValid(email!)) {
                     return null;
                   } else {
@@ -94,6 +151,7 @@ class Connexion extends State<AuthConnexion> {
             const Padding(padding: EdgeInsets.all(10)),
             TextFormField(
               validator: (password) {
+                finalPassword = password;
                 if (isPasswordValid(password)) {
                   return null;
                 } else {
@@ -131,7 +189,7 @@ class Connexion extends State<AuthConnexion> {
                     )),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
+                    logIn(finalEmail, finalPassword);
                   }
                 },
               ),

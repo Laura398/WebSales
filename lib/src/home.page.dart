@@ -11,7 +11,7 @@ import 'package:websales/models/product.model.dart';
 
 const d_green = Color.fromARGB(255, 139, 199, 233);
 
-String url = "10.31.37.17:3000";
+String url = "10.31.32.47:3000";
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -110,12 +110,14 @@ class SearchSection extends State<MainPage> {
   getData() async {
     try {
       var response = await http.get(Uri.http(url, "/api/products"));
+      print(response);
+      print(response.body);
       List<Product> products = List<Product>.from(
           json.decode(response.body).map((p) => Product.fromJson(p)));
-      print("TEST");
+      print(products);
       return products;
     } catch (err) {
-      print("ERROR : " + err.toString());
+      print("ERROR MESSAGE : " + err.toString());
     }
   }
 
