@@ -11,7 +11,7 @@ import 'package:websales/models/product.model.dart';
 
 const d_green = Color.fromARGB(255, 139, 199, 233);
 
-String url = "10.31.32.47:3000";
+String url = "192.168.1.18:3000";
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);

@@ -14,7 +14,7 @@ class Bidders {
     bidderId = json['bidder_id'];
     bidderFirstName = json['bidder_first_name'];
     bidderLastName = json['bidder_last_name'];
-    bidderAmount = json['price'];
+    bidderAmount = json['bidder_bid_amount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -22,7 +22,7 @@ class Bidders {
     data['user_id'] = this.bidderId;
     data['bidder_first_name'] = this.bidderFirstName;
     data['bidder_last_name'] = this.bidderLastName;
-    data['price'] = this.bidderAmount;
+    data['bidder_bid_amount'] = this.bidderAmount;
     return data;
   }
 }

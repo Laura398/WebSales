@@ -9,6 +9,13 @@ import 'home.page.dart';
 
 import 'package:flutter/services.dart';
 
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:websales/models/product.model.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
 class Add extends StatefulWidget {
   const Add({Key? key}) : super(key: key);
 
@@ -17,8 +24,26 @@ class Add extends StatefulWidget {
 }
 
 DateTime dateToShow = DateTime.now();
+bool logged = false;
 
 class AddState extends State<Add> {
+  @override
+  initState() {
+    super.initState();
+    getUserToken();
+  }
+
+  void getUserToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString("token");
+    if (token != null) {
+      setState(() {
+        logged = true;
+      });
+    }
+    print(token);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +78,43 @@ class AddPageState extends State<AddPage> {
   PickedFile? _image;
   final ImagePicker _picker = ImagePicker();
 
+  String? finalImage = "";
+  String? finalTitle = "";
+  String? finalDescription = "";
+  int? finalPrice = 0;
+  String? finalDate = "";
+
+  createProduct(
+      finalTitle, finalDescription, finalPrice, finalImage, finalDate) async {
+    print(finalTitle);
+    print(finalDescription);
+    print(finalPrice);
+    // if (finalImage) print(finalImage);
+    print(finalDate);
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString("token");
+      var response = await http.post(
+        Uri.http(url, "/api/products/"),
+        body: jsonEncode({
+          "title": finalTitle,
+          if (finalImage != "") "picture": finalImage,
+          "description": finalDescription,
+          "base_price": finalPrice,
+          "end_of_the_auction": finalDate,
+          "beginning_of_the_auction": new DateTime.now().toString(),
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+      );
+      Navigator.pushReplacementNamed(context, '/myAuction');
+    } catch (err) {
+      print("ERROR : " + err.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -62,6 +124,9 @@ class AddPageState extends State<AddPage> {
           imageProduct(),
           const Padding(padding: EdgeInsets.all(20)),
           TextFormField(
+            onChanged: (titleText) => setState(() {
+              finalTitle = titleText;
+            }),
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               contentPadding: const EdgeInsets.all(18),
@@ -75,6 +140,9 @@ class AddPageState extends State<AddPage> {
           ),
           const Padding(padding: EdgeInsets.all(12)),
           TextFormField(
+            onChanged: (descritionText) => setState(() {
+              finalDescription = descritionText;
+            }),
             decoration: InputDecoration(
               border: const OutlineInputBorder(),
               contentPadding: const EdgeInsets.all(18),
@@ -93,6 +161,9 @@ class AddPageState extends State<AddPage> {
                 width: 150,
                 margin: const EdgeInsets.only(left: 0),
                 child: TextFormField(
+                  onChanged: (priceText) => setState(() {
+                    finalPrice = int.parse(priceText);
+                  }),
                   keyboardType: TextInputType.phone,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: InputDecoration(
@@ -123,6 +194,7 @@ class AddPageState extends State<AddPage> {
               if (newDate == null) return;
               setState(() {
                 dateToShow = newDate;
+                finalDate = newDate.toString();
               });
             },
             child: Column(
@@ -150,7 +222,7 @@ class AddPageState extends State<AddPage> {
               onPressed: () {
                 Navigator.pushNamed(
                   context,
-                  '/',
+                  '/myAuction',
                 );
               },
               child: const Icon(Icons.cancel),
@@ -170,10 +242,88 @@ class AddPageState extends State<AddPage> {
             const Padding(padding: EdgeInsets.only(top: 100, right: 140)),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  '/',
-                );
+                if (finalTitle == "") {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Erreur'),
+                        content: const Text('Veuillez choisir un titre'),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: const Text('OK'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (finalDescription == "") {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Erreur'),
+                        content: const Text('Veuillez choisir une description'),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: const Text('OK'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (finalPrice == 0) {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Erreur'),
+                        content: const Text('Veuillez choisir un prix'),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: const Text('OK'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else if (finalDate == "") {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Erreur'),
+                        content: const Text(
+                            'Veuillez choisir une date de fin d\'enchère'),
+                        actions: <Widget>[
+                          FlatButton(
+                            child: const Text('OK'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                } else {
+                  createProduct(finalTitle, finalDescription, finalPrice,
+                      finalImage, finalDate);
+                  Navigator.pushNamed(
+                    context,
+                    '/myAuction',
+                  );
+                }
+                ;
               },
               child: const Icon(Icons.done),
               style: TextButton.styleFrom(
@@ -222,20 +372,21 @@ class AddPageState extends State<AddPage> {
                   width: 400,
                   height: 200,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      border: Border.all(color: Colors.grey.shade100),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.shade300,
-                          blurRadius: 4,
-                          offset: const Offset(0, 10),
-                        ),
-                      ],
-                      image: DecorationImage(
-                        image: FileImage(File(_image!.path)),
-                        fit: BoxFit.cover,
-                      )),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey.shade100),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.shade300,
+                        blurRadius: 4,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                    image: DecorationImage(
+                      image: FileImage(File(_image!.path)),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
           Positioned(
               child: InkWell(

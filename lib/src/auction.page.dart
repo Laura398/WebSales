@@ -44,30 +44,32 @@ class MyAuctionDataState extends State<MyAuctionData> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                '/addAuction',
-              );
-            },
-            child: const Text('Ajouter une offre'),
-            style: TextButton.styleFrom(
-              alignment: Alignment.center,
-              elevation: 10,
-              primary: Colors.white,
-              backgroundColor: colorNav,
-              minimumSize: const Size.fromHeight(42),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(25),
-                ),
-              ),
-              textStyle: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
-              ),
-            )));
+      width: MediaQuery.of(context).size.width,
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.pushNamed(
+            context,
+            '/addAuction',
+          );
+        },
+        child: const Text('Ajouter une offre'),
+        style: TextButton.styleFrom(
+          alignment: Alignment.center,
+          elevation: 10,
+          primary: Colors.white,
+          backgroundColor: colorNav,
+          minimumSize: const Size.fromHeight(42),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(25),
+            ),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ),
+    );
   }
 }

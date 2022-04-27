@@ -9,7 +9,7 @@ import 'package:websales/models/product.model.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-String url = "10.31.32.47:3000";
+String url = "192.168.1.18:3000";
 
 const d_green = Color.fromARGB(255, 139, 199, 233);
 
@@ -58,6 +58,7 @@ class StateOneProduct extends State<OneProduct> {
 
     int bidderPrice = 0;
     List bidders = arguments['product'].bidders;
+    print(bidders);
     if (arguments['product'].bidders != null) {
       bidders.sort((a, b) => a.bidderAmount.compareTo(b.bidderAmount));
     }

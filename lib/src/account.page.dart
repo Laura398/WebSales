@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:websales/main.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 class MyAccount extends StatefulWidget {
   const MyAccount({Key? key}) : super(key: key);
 
@@ -56,7 +58,16 @@ class MyAccountDataState extends State<MyAccountData> {
                 color: colorNav,
               ),
               child: IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  logOut() async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.remove("token");
+                    Navigator.pushReplacementNamed(context, '/');
+                  }
+
+                  logOut();
+                },
                 icon: const Icon(Icons.power_settings_new),
                 iconSize: 32,
                 color: Colors.white,

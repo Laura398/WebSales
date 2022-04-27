@@ -12,7 +12,7 @@ import 'package:websales/models/product.model.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-String url = "10.31.32.47:3000";
+String url = "192.168.1.18:3000";
 
 class Auth extends StatefulWidget {
   const Auth({Key? key}) : super(key: key);
