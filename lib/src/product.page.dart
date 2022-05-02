@@ -23,6 +23,23 @@ class OneProduct extends StatefulWidget {
 class StateOneProduct extends State<OneProduct> {
   String productId = "";
   int myBidPrice = 0;
+  bool logged = false;
+
+  @override
+  initState() {
+    super.initState();
+    getUserToken();
+  }
+
+  void getUserToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString("token");
+    if (token != null) {
+      setState(() {
+        logged = true;
+      });
+    }
+  }
 
   updateBid(myBidPrice) async {
     print(url + "/api/products/bids/$productId");
@@ -32,9 +49,9 @@ class StateOneProduct extends State<OneProduct> {
       print(token);
       print(jsonEncode(myBidPrice));
       var response = await http.patch(
-        Uri.http(url, "/api/products/$productId"),
+        Uri.http(url, "/api/products/bids/$productId"),
         body: jsonEncode({
-          "bidder_bid_amount": jsonEncode(myBidPrice),
+          "bidder_bid_amount": myBidPrice,
         }),
         headers: {
           "Authorization": "Bearer $token",
@@ -193,7 +210,7 @@ class StateOneProduct extends State<OneProduct> {
                 padding: EdgeInsets.all(16),
               ),
               SizedBox(height: 30),
-              if (!mine)
+              if (!mine & logged)
                 Container(
                   child: ElevatedButton(
                     child: const Text('Enchérir'),
@@ -257,6 +274,7 @@ class StateOneProduct extends State<OneProduct> {
         new ElevatedButton(
           onPressed: () {
             updateBid(myBidPrice);
+            Navigator.pushReplacementNamed(context, '/');
           },
           // textColor: Theme.of(context).primaryColor,
           child: Icon(

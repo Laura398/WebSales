@@ -119,97 +119,143 @@ class Connexion extends State<AuthConnexion> {
               ),
             ),
             const Padding(padding: EdgeInsets.all(20)),
-            const Text(
-              'Connexion',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w800,
+            if (!logged)
+              const Text(
+                'Connexion',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w800,
+                ),
+              )
+            else
+              const Text(
+                'Déconnexion',
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
-            ),
             const Padding(
               padding: EdgeInsets.all(20),
             ),
-            TextFormField(
-                validator: (email) {
-                  finalEmail = email;
-                  if (isEmailValid(email!)) {
+            if (!logged)
+              TextFormField(
+                  validator: (email) {
+                    finalEmail = email;
+                    if (isEmailValid(email!)) {
+                      return null;
+                    } else {
+                      return 'Email is not valid';
+                    }
+                  },
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    contentPadding: const EdgeInsets.all(18),
+                    labelText: 'E-mail',
+                    labelStyle: GoogleFonts.nunito(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  )),
+            const Padding(padding: EdgeInsets.all(10)),
+            if (!logged)
+              TextFormField(
+                validator: (password) {
+                  finalPassword = password;
+                  if (isPasswordValid(password)) {
                     return null;
                   } else {
-                    return 'Email is not valid';
+                    return 'Password is not valid';
                   }
                 },
+                obscureText: true,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
                   contentPadding: const EdgeInsets.all(18),
-                  labelText: 'E-mail',
+                  labelText: 'Mot de passe',
                   labelStyle: GoogleFonts.nunito(
                     color: Colors.black,
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
                   ),
-                )),
-            const Padding(padding: EdgeInsets.all(10)),
-            TextFormField(
-              validator: (password) {
-                finalPassword = password;
-                if (isPasswordValid(password)) {
-                  return null;
-                } else {
-                  return 'Password is not valid';
-                }
-              },
-              obscureText: true,
-              decoration: InputDecoration(
-                border: const OutlineInputBorder(),
-                contentPadding: const EdgeInsets.all(18),
-                labelText: 'Mot de passe',
-                labelStyle: GoogleFonts.nunito(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
                 ),
               ),
-            ),
             const Padding(padding: EdgeInsets.all(18)),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: ElevatedButton(
-                child: const Text('Connexion'),
-                style: TextButton.styleFrom(
-                    alignment: Alignment.center,
-                    elevation: 10,
-                    primary: Colors.white,
-                    backgroundColor: colorNav,
-                    minimumSize: const Size(30, 40),
-                    shape: const BeveledRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(3))),
-                    textStyle: const TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w800,
-                    )),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    logIn(finalEmail, finalPassword);
-                  }
-                },
-              ),
-            ),
-            SizedBox(
-              child: ElevatedButton(
-                child: const Text('Inscription'),
-                style: TextButton.styleFrom(
-                  elevation: 0,
-                  primary: Colors.black,
-                  backgroundColor: Colors.transparent,
+            if (!logged)
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  child: const Text('Connexion'),
+                  style: TextButton.styleFrom(
+                      alignment: Alignment.center,
+                      elevation: 10,
+                      primary: Colors.white,
+                      backgroundColor: colorNav,
+                      minimumSize: const Size(30, 40),
+                      shape: const BeveledRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(3))),
+                      textStyle: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w800,
+                      )),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      logIn(finalEmail, finalPassword);
+                    }
+                  },
                 ),
-                onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    '/authSignUp',
-                  );
-                },
+              )
+            else
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  child: const Text('Déconnexion'),
+                  style: TextButton.styleFrom(
+                      alignment: Alignment.center,
+                      elevation: 10,
+                      primary: Colors.white,
+                      backgroundColor: colorNav,
+                      minimumSize: const Size(30, 40),
+                      shape: const BeveledRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(3))),
+                      textStyle: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w800,
+                      )),
+                  onPressed: () {
+                    print("Déconnexion");
+                    logOut() async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.remove("token");
+                      logged = false;
+                      Navigator.pushReplacementNamed(context, '/');
+                    }
+
+                    ;
+
+                    logOut();
+                  },
+                ),
               ),
-            )
+            if (!logged)
+              SizedBox(
+                child: ElevatedButton(
+                  child: const Text('Inscription'),
+                  style: TextButton.styleFrom(
+                    elevation: 0,
+                    primary: Colors.black,
+                    backgroundColor: Colors.transparent,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      '/authSignUp',
+                    );
+                  },
+                ),
+              )
           ],
         ),
       ),

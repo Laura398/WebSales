@@ -32,7 +32,7 @@ class WebSales extends StatelessWidget {
         '/myBid': (context) => const MyBid(),
         '/auth': (context) => const Auth(),
         '/authSignUp': (context) => const AuthInscription(),
-        '/myAccount': (context) => const MyAccount(),
+        // '/myAccount': (context) => const MyAccount(),
         '/addAuction': (context) => const Add(),
       },
       home: const DefaultTabController(
