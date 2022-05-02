@@ -16,6 +16,8 @@ import 'package:websales/models/product.model.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:jwt_decode/jwt_decode.dart';
+
 class Add extends StatefulWidget {
   const Add({Key? key}) : super(key: key);
 
@@ -41,7 +43,6 @@ class AddState extends State<Add> {
         logged = true;
       });
     }
-    print(token);
   }
 
   @override
@@ -86,11 +87,6 @@ class AddPageState extends State<AddPage> {
 
   createProduct(
       finalTitle, finalDescription, finalPrice, finalImage, finalDate) async {
-    print(finalTitle);
-    print(finalDescription);
-    print(finalPrice);
-    // if (finalImage) print(finalImage);
-    print(finalDate);
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString("token");

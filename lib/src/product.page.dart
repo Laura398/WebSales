@@ -9,7 +9,7 @@ import 'package:websales/models/product.model.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-String url = "192.168.1.18:3000";
+String url = "10.31.32.47:3000";
 
 const d_green = Color.fromARGB(255, 139, 199, 233);
 
@@ -53,6 +53,16 @@ class StateOneProduct extends State<OneProduct> {
   Widget build(BuildContext context) {
     final arguments = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
+
+    bool mine = false;
+
+    print(arguments['mine']);
+    if (arguments['mine'] != null) {
+      mine = true;
+    }
+
+    print(arguments['mine']);
+    print(mine);
 
     productId = arguments['product'].sId;
 
@@ -183,30 +193,31 @@ class StateOneProduct extends State<OneProduct> {
                 padding: EdgeInsets.all(16),
               ),
               SizedBox(height: 30),
-              Container(
-                child: ElevatedButton(
-                  child: const Text('Enchérir'),
-                  style: TextButton.styleFrom(
-                      alignment: Alignment.center,
-                      elevation: 10,
-                      primary: Colors.white,
-                      backgroundColor: d_green,
-                      minimumSize: const Size(30, 40),
-                      shape: const BeveledRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(3))),
-                      textStyle: const TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w800,
-                      )),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) =>
-                          _buildPopupDialog(context),
-                    );
-                  },
+              if (!mine)
+                Container(
+                  child: ElevatedButton(
+                    child: const Text('Enchérir'),
+                    style: TextButton.styleFrom(
+                        alignment: Alignment.center,
+                        elevation: 10,
+                        primary: Colors.white,
+                        backgroundColor: d_green,
+                        minimumSize: const Size(30, 40),
+                        shape: const BeveledRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(3))),
+                        textStyle: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w800,
+                        )),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) =>
+                            _buildPopupDialog(context),
+                      );
+                    },
+                  ),
                 ),
-              ),
             ],
           ),
         ),
