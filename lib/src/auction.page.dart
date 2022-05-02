@@ -65,6 +65,8 @@ class MyAuctionDataState extends State<MyAuctionData> {
   initState() {
     super.initState();
     getUserToken();
+    print("LOGGED : ");
+    print(logged);
 
     getData().then((p) {
       if (p != null) {
@@ -115,48 +117,92 @@ class MyAuctionDataState extends State<MyAuctionData> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                '/addAuction',
-              );
-            },
-            child: const Text('Ajouter une offre'),
-            style: TextButton.styleFrom(
-              alignment: Alignment.center,
-              elevation: 10,
-              primary: Colors.white,
-              backgroundColor: colorNav,
-              minimumSize: const Size.fromHeight(42),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(25),
+        if (logged)
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  '/addAuction',
+                );
+              },
+              child: const Text('Ajouter une offre'),
+              style: TextButton.styleFrom(
+                alignment: Alignment.center,
+                elevation: 10,
+                primary: Colors.white,
+                backgroundColor: colorNav,
+                minimumSize: const Size.fromHeight(42),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(25),
+                  ),
                 ),
-              ),
-              textStyle: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w800,
+                textStyle: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
             ),
           ),
-        ),
-        SizedBox(height: 20),
-        Column(
-          children: productFinalList
-              .map((product) => GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      '/product',
-                      arguments: {'product': product, 'mine': "mine"},
-                    );
-                  },
-                  child: ProductCard(product)))
-              .toList(),
-        ),
+        if (logged) SizedBox(height: 20),
+        if (logged)
+          Column(
+            children: productFinalList
+                .map((product) => GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/product',
+                        arguments: {'product': product, 'mine': "mine"},
+                      );
+                    },
+                    child: ProductCard(product)))
+                .toList(),
+          )
+        else
+          Container(
+            child: Center(
+              child: Text(
+                "Veuillez vous connecter pour accéder à ces informations.",
+                style: GoogleFonts.nunito(
+                  color: Colors.black,
+                  fontSize: 22,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ),
+        if (!logged)
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context,
+                  '/auth',
+                );
+              },
+              child: const Text('Connexion'),
+              style: TextButton.styleFrom(
+                alignment: Alignment.center,
+                elevation: 10,
+                primary: Colors.white,
+                backgroundColor: colorNav,
+                minimumSize: const Size.fromHeight(42),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(25),
+                  ),
+                ),
+                textStyle: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }

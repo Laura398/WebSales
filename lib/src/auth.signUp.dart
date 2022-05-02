@@ -1,6 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:websales/main.dart';
+import 'package:websales/src/account.page.dart';
+
+export 'auth.signIn.dart';
+
+import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+import 'package:websales/models/product.model.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+String url = "10.31.32.47:3000";
 
 class AuthInscription extends StatefulWidget {
   const AuthInscription({Key? key}) : super(key: key);
@@ -8,8 +20,36 @@ class AuthInscription extends StatefulWidget {
   State<StatefulWidget> createState() => Inscription();
 }
 
+String? finalFirstName = '';
+String? finalLastName = '';
+String? finalEmail = '';
+String? finalPassword = '';
+String? finalConfirmPassword = '';
+
 class Inscription extends State<AuthInscription> {
   final _formKey = GlobalKey<FormState>();
+
+  signIn(finalFirstName, finalLastName, finalEmail, finalPassword,
+      finalConfirmPassword) async {
+    try {
+      var response = await http.post(
+        Uri.http(url, "/api/users/register"),
+        body: jsonEncode({
+          "firstName": finalFirstName,
+          "lastName": finalLastName,
+          "email": finalEmail,
+          "password": finalPassword,
+          "passwordCheck": finalConfirmPassword,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+      );
+    } catch (err) {
+      print("ERROR : " + err.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +78,7 @@ class Inscription extends State<AuthInscription> {
                   'WEB\$ALES',
                   style: GoogleFonts.nunito(
                     color: colorNav,
-                    fontSize: 50,
+                    fontSize: 45,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -53,6 +93,7 @@ class Inscription extends State<AuthInscription> {
                 const Padding(padding: EdgeInsets.all(20)),
                 TextFormField(
                   validator: (value) {
+                    finalFirstName = value;
                     if (value == null || value.isEmpty) {
                       return 'Please enter some text';
                     }
@@ -72,6 +113,7 @@ class Inscription extends State<AuthInscription> {
                 const Padding(padding: EdgeInsets.all(8)),
                 TextFormField(
                   validator: (value) {
+                    finalLastName = value;
                     if (value == null || value.isEmpty) {
                       return 'Please enter some text';
                     }
@@ -91,6 +133,7 @@ class Inscription extends State<AuthInscription> {
                 const Padding(padding: EdgeInsets.all(8)),
                 TextFormField(
                   validator: (email) {
+                    finalEmail = email;
                     if (isEmailValid(email!)) {
                       return null;
                     } else {
@@ -111,6 +154,7 @@ class Inscription extends State<AuthInscription> {
                 const Padding(padding: EdgeInsets.all(8)),
                 TextFormField(
                   validator: (password) {
+                    finalPassword = password;
                     if (isPasswordValid(password)) {
                       return null;
                     } else {
@@ -122,6 +166,28 @@ class Inscription extends State<AuthInscription> {
                     border: const OutlineInputBorder(),
                     contentPadding: const EdgeInsets.all(10),
                     labelText: 'Mot de passe',
+                    labelStyle: GoogleFonts.nunito(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                const Padding(padding: EdgeInsets.all(8)),
+                TextFormField(
+                  validator: (password) {
+                    finalConfirmPassword = password;
+                    if (isPasswordValid(password)) {
+                      return null;
+                    } else {
+                      return 'Password is not valid';
+                    }
+                  },
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    border: const OutlineInputBorder(),
+                    contentPadding: const EdgeInsets.all(10),
+                    labelText: 'Confirmation du mot de passe',
                     labelStyle: GoogleFonts.nunito(
                       color: Colors.black,
                       fontSize: 18,
@@ -147,7 +213,8 @@ class Inscription extends State<AuthInscription> {
                         )),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
+                        signIn(finalFirstName, finalLastName, finalEmail,
+                            finalPassword, finalConfirmPassword);
                         Navigator.pushNamed(
                           context,
                           '/',
