@@ -32,7 +32,7 @@ class MyAuctionState extends State<MyAuction> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'My auctions',
+          'Mes offres',
           style: GoogleFonts.nunito(
             color: Colors.black,
             fontSize: 22,
@@ -65,15 +65,10 @@ class MyAuctionDataState extends State<MyAuctionData> {
   initState() {
     super.initState();
     getUserToken();
-    print("LOGGED : ");
-    print(logged);
 
     getData().then((p) {
       if (p != null) {
         setState(() {
-          print(" data p start");
-          print(p);
-          print(" data p end");
           productsList = p;
           productFinalList = p;
         });
@@ -106,7 +101,6 @@ class MyAuctionDataState extends State<MyAuctionData> {
       var response = await http.get(Uri.http(url, "/api/products/$userId"));
       List<Product> products = List<Product>.from(
           json.decode(response.body).map((p) => Product.fromJson(p)));
-      print(products.length);
       return products;
     } catch (err) {
       print("ERROR MESSAGE : " + err.toString());
@@ -246,10 +240,8 @@ class ProductCard extends StatelessWidget {
                 // image: Image.network(
                 //   "${productData.picture}",
                 // ),
-                image: productData.picture != null
-                    ? NetworkImage(productData.picture.toString())
-                    : NetworkImage(
-                        "https://www.referenseo.com/wp-content/uploads/2019/03/image-attractive-960x540.jpg"), // if image is online
+                image: MemoryImage(base64Decode(productData.picture!)),
+
                 fit: BoxFit.cover,
               ), // if image is local
             ),

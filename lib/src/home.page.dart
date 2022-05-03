@@ -1,6 +1,7 @@
 // import 'dart:html';
 
 import 'dart:convert';
+import 'dart:io' as Io;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -110,11 +111,8 @@ class SearchSection extends State<MainPage> {
   getData() async {
     try {
       var response = await http.get(Uri.http(url, "/api/products"));
-      print(response);
-      print(response.body);
       List<Product> products = List<Product>.from(
           json.decode(response.body).map((p) => Product.fromJson(p)));
-      print(products);
       return products;
     } catch (err) {
       print("ERROR MESSAGE : " + err.toString());
@@ -459,10 +457,7 @@ class ProductCard extends StatelessWidget {
                 // image: Image.network(
                 //   "${productData.picture}",
                 // ),
-                image: productData.picture != null
-                    ? NetworkImage(productData.picture.toString())
-                    : NetworkImage(
-                        "https://www.referenseo.com/wp-content/uploads/2019/03/image-attractive-960x540.jpg"), // if image is online
+                image: MemoryImage(base64Decode(productData.picture!)),
                 fit: BoxFit.cover,
               ), // if image is local
             ),
