@@ -142,19 +142,23 @@ class MyAuctionDataState extends State<MyAuctionData> {
           ),
         if (logged) SizedBox(height: 20),
         if (logged)
-          Column(
-            children: productFinalList
-                .map((product) => GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        '/product',
-                        arguments: {'product': product, 'mine': "mine"},
-                      );
-                    },
-                    child: ProductCard(product)))
-                .toList(),
-          )
+          productFinalList.length > 0
+              ? Column(
+                  children: productFinalList
+                      .map((product) => GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/product',
+                              arguments: {'product': product, 'mine': "mine"},
+                            );
+                          },
+                          child: ProductCard(product)))
+                      .toList(),
+                )
+              : Center(
+                  child: CircularProgressIndicator(),
+                )
         else
           Container(
             child: Center(

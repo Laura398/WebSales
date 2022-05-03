@@ -292,19 +292,23 @@ class SearchSection extends State<MainPage> {
               )
             ],
           ),
-          Column(
-            children: productFinalList
-                .map((product) => GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        '/product',
-                        arguments: {'product': product},
-                      );
-                    },
-                    child: ProductCard(product)))
-                .toList(),
-          ),
+          productFinalList.length > 0
+              ? Column(
+                  children: productFinalList
+                      .map((product) => GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/product',
+                              arguments: {'product': product},
+                            );
+                          },
+                          child: ProductCard(product)))
+                      .toList(),
+                )
+              : Center(
+                  child: CircularProgressIndicator(),
+                )
         ],
       ),
     );
