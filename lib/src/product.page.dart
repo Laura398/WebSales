@@ -42,12 +42,9 @@ class StateOneProduct extends State<OneProduct> {
   }
 
   updateBid(myBidPrice) async {
-    print(url + "/api/products/bids/$productId");
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString("token");
-      print(token);
-      print(jsonEncode(myBidPrice));
       var response = await http.patch(
         Uri.http(url, "/api/products/bids/$productId"),
         body: jsonEncode({
@@ -58,8 +55,23 @@ class StateOneProduct extends State<OneProduct> {
           "Content-Type": "application/json"
         },
       );
-      print("TEST");
-      print(response);
+      // return response;
+    } catch (err) {
+      print("ERROR : " + err.toString());
+    }
+  }
+
+  deleteProduct() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString("token");
+      var response = await http.delete(
+        Uri.http(url, "/api/products/$productId"),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        },
+      );
       // return response;
     } catch (err) {
       print("ERROR : " + err.toString());
@@ -73,19 +85,14 @@ class StateOneProduct extends State<OneProduct> {
 
     bool mine = false;
 
-    print(arguments['mine']);
     if (arguments['mine'] != null) {
       mine = true;
     }
-
-    print(arguments['mine']);
-    print(mine);
 
     productId = arguments['product'].sId;
 
     int bidderPrice = 0;
     List bidders = arguments['product'].bidders;
-    print(bidders);
     if (arguments['product'].bidders != null) {
       bidders.sort((a, b) => a.bidderAmount.compareTo(b.bidderAmount));
     }
@@ -134,11 +141,8 @@ class StateOneProduct extends State<OneProduct> {
                             // image: Image.network(
                             //   "${productData.picture}",
                             // ),
-                            image: arguments['product'].picture != null
-                                ? NetworkImage(
-                                    arguments['product'].picture.toString())
-                                : NetworkImage(
-                                    "https://www.referenseo.com/wp-content/uploads/2019/03/image-attractive-960x540.jpg"), // if image is online
+                            image: MemoryImage(base64Decode(arguments['product']
+                                .picture)), // if image is online
                             fit: BoxFit.cover,
                           ), // if image is local
                         ),
@@ -235,10 +239,115 @@ class StateOneProduct extends State<OneProduct> {
                     },
                   ),
                 ),
+              if (mine)
+                Container(
+                  child: ElevatedButton(
+                    child: const Text('Confirmer l\'achat'),
+                    style: TextButton.styleFrom(
+                        alignment: Alignment.center,
+                        elevation: 10,
+                        primary: Colors.white,
+                        backgroundColor: d_green,
+                        minimumSize: const Size(30, 40),
+                        shape: const BeveledRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(3))),
+                        textStyle: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w800,
+                        )),
+                    onPressed: () {
+                      showConfirmDialog(context);
+                    },
+                  ),
+                ),
+              if (mine) SizedBox(height: 30),
+              if (mine)
+                Container(
+                  child: ElevatedButton(
+                    child: const Text('Supprimer le produit'),
+                    style: TextButton.styleFrom(
+                        alignment: Alignment.center,
+                        elevation: 10,
+                        primary: Colors.white,
+                        backgroundColor: d_green,
+                        minimumSize: const Size(30, 40),
+                        shape: const BeveledRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(3))),
+                        textStyle: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w800,
+                        )),
+                    onPressed: () {
+                      showAlertDialog(context);
+                    },
+                  ),
+                ),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Annuler"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Confirmer"),
+      onPressed: () {
+        deleteProduct();
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Suppression du produit"),
+      content: Text(
+          "Cette action est irréversible. Etes-vous sûr de vouloir supprimer ce produit ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  showConfirmDialog(BuildContext context) {
+    // set up the buttons
+    Widget continueButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        deleteProduct();
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Confirmation de vente"),
+      content: Text("Le produit a été vendu !"),
+      actions: [
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 

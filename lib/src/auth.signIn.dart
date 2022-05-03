@@ -7,6 +7,8 @@ export 'auth.signIn.dart';
 
 import 'dart:convert';
 
+import 'package:jwt_decode/jwt_decode.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:websales/models/product.model.dart';
 
@@ -22,6 +24,8 @@ class Auth extends StatefulWidget {
 
 bool logged = false;
 
+String userId = "";
+
 class AuthState extends State<Auth> {
   @override
   initState() {
@@ -35,10 +39,11 @@ class AuthState extends State<Auth> {
     if (token != null) {
       setState(() {
         logged = true;
+        Map<String, dynamic> payload = Jwt.parseJwt(token);
+        userId = payload['userId'];
       });
       Navigator.pushReplacementNamed(context, '/myAccount');
     }
-    print(token);
   }
 
   @override
@@ -46,7 +51,7 @@ class AuthState extends State<Auth> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          logged ? 'Profile' : 'Authentication',
+          logged ? 'Profil' : 'Authentication',
           style: GoogleFonts.nunito(
             color: Colors.black,
             fontSize: 22,
@@ -86,13 +91,62 @@ class Connexion extends State<AuthConnexion> {
           "Accept": "application/json",
         },
       );
-      print("TEST RESPONSE");
       var data = json.decode(response.body);
-      print(data['token']);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('token', data['token']);
       logged = true;
       Navigator.pushReplacementNamed(context, '/');
+    } catch (err) {
+      print("ERROR : " + err.toString());
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = FlatButton(
+      child: Text("Annuler"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    Widget continueButton = FlatButton(
+      child: Text("Confirmer"),
+      onPressed: () {
+        Navigator.pop(context);
+        deleteUser();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Suppression du produit"),
+      content: Text(
+          "Cette action est irréversible. Etes-vous sûr de vouloir supprimer ce produit ?"),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  deleteUser() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString("token");
+      var response = await http.delete(
+        Uri.http(url, "/api/users/$userId"),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        },
+      );
+      // return response;
     } catch (err) {
       print("ERROR : " + err.toString());
     }
@@ -224,7 +278,41 @@ class Connexion extends State<AuthConnexion> {
                         fontWeight: FontWeight.w800,
                       )),
                   onPressed: () {
-                    print("Déconnexion");
+                    logOut() async {
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      prefs.remove("token");
+                      logged = false;
+                      Navigator.pushReplacementNamed(context, '/');
+                    }
+
+                    ;
+
+                    logOut();
+                  },
+                ),
+              ),
+            if (logged) const Padding(padding: EdgeInsets.all(10)),
+            if (logged)
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: ElevatedButton(
+                  child: const Text('Suppression du compte'),
+                  style: TextButton.styleFrom(
+                      alignment: Alignment.center,
+                      elevation: 10,
+                      primary: Colors.white,
+                      backgroundColor: colorNav,
+                      minimumSize: const Size(30, 40),
+                      shape: const BeveledRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(3))),
+                      textStyle: const TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w800,
+                      )),
+                  onPressed: () {
+                    showAlertDialog(context);
+
                     logOut() async {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();

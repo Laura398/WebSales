@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:websales/main.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:websales/src/auction.page.dart';
 
 import 'home.page.dart';
 
@@ -17,6 +18,8 @@ import 'package:websales/models/product.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:jwt_decode/jwt_decode.dart';
+
+String url = "10.31.32.47:3000";
 
 class Add extends StatefulWidget {
   const Add({Key? key}) : super(key: key);
@@ -79,6 +82,8 @@ class AddPageState extends State<AddPage> {
   PickedFile? _image;
   final ImagePicker _picker = ImagePicker();
 
+  String? imageB64 = "";
+
   String? finalImage = "";
   String? finalTitle = "";
   String? finalDescription = "";
@@ -94,11 +99,11 @@ class AddPageState extends State<AddPage> {
         Uri.http(url, "/api/products/"),
         body: jsonEncode({
           "title": finalTitle,
-          if (finalImage != "") "picture": finalImage,
           "description": finalDescription,
           "base_price": finalPrice,
           "end_of_the_auction": finalDate,
           "beginning_of_the_auction": new DateTime.now().toString(),
+          "picture": imageB64,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -216,10 +221,7 @@ class AddPageState extends State<AddPage> {
           Row(children: <Widget>[
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  '/myAuction',
-                );
+                Navigator.pop(context);
               },
               child: const Icon(Icons.cancel),
               style: TextButton.styleFrom(
@@ -314,10 +316,12 @@ class AddPageState extends State<AddPage> {
                 } else {
                   createProduct(finalTitle, finalDescription, finalPrice,
                       finalImage, finalDate);
-                  Navigator.pushNamed(
-                    context,
-                    '/myAuction',
-                  );
+                  // Navigator.pushNamed(
+                  //   context,
+                  //   '/myAuction',
+                  // );
+                  Navigator.pop(context);
+                  // Navigator.pushNamed(context, "/myAuction");
                 }
                 ;
               },
@@ -444,8 +448,10 @@ class AddPageState extends State<AddPage> {
     final pickedFile = await _picker.getImage(
       source: source!,
     );
+    var b64Data = base64Encode(await pickedFile!.readAsBytes());
     setState(() {
       _image = pickedFile;
+      imageB64 = b64Data;
     });
   }
 }
