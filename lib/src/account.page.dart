@@ -76,7 +76,7 @@
 //             margin: const EdgeInsets.only(left: 10, right: 10, top: 12),
 //             child: Text(
 //               'Contact',
-//               style: GoogleFonts.nunito(
+              // style: GoogleFonts.nunito(
 //                 fontSize: 20,
 //                 fontWeight: FontWeight.w800,
 //               ),
